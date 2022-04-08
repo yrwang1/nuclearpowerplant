@@ -1,6 +1,6 @@
 ## Description of our EDAV final project. 
 
-
+more info is coming soon
 
 ## Link to the book URL
 
