@@ -1,11 +1,18 @@
 # Data transformation
-For data files related to the accident at the Fukushima Daiichi Nuclear Power Station, the original data were downloaded as `.xls` files from the official website in the data section. The Excels turned out to be messy after reading in R using `readxl::read_excel`, so we did a lot of work processing and cleaning them.
 
-For the fish-related files, messy headlines were first removed and only useful data were kept. Then, 10 files covering from 2012 to 2021 were combined and processed with multiple functions, and the number of samples below/exceeding the standard limit were counted using `summarise()` by year, type of fish species and prefecture.
+- The Chernobyl Accident in 1986
 
-The agricultural products and milk-related files were pretty tidy so that pipes `%>%` were used to simply extract and calculate the features.
+The original data published by UNSCEAR are organized in the form of tables. Therefore, we used the online PDF to Excel converter to transform those tables to `.xlxs` files. In this way, by using `readxl::read_excel` and setting `skip` to some value, we were able to drop messy headlines and get nice and neat data frames.
 
-Data cleaning for the absorbed dose to the thyroid-related files were similar to the fish-related files. Messy headlines were first removed and only useful data were kept. Then, 9 Tables were combined and processed differently with multiple functions based on the age group and area.
+The reports claim that external irradiation from radioactive materials dumped on the ground and consumption of contaminated food are the two key paths to consider in the dose assessment. For radionuclides, we only consider Iodine-131, Caesium-134, and Caesium-137 since they are the most significant contributions to total exposure and have been extensively considered by many countries. For contaminated food, only the most fundamental foods have been considered: milk, grains, leafy greens, other vegetables and fruits, and meat. Most people's food intake can be classified into one of these five groups. Other foods, such as mushrooms and lake fish, have been found to absorb radionuclides and may be essential to some consumers, but they have little impact on collective dosage estimates. Therefore, we only focus on these variables in this project.
+
+During the process of data cleaning, the most frequently used package is `tidyverse`, which helps manipulate the data frames. The functions `select`, `pivot_longer`, and `fill` were applied to almost every data frame in order to select the variables we want and transform the data into a form for `ggplot`.
+
+- The Fukushima-Daiichi Nuclear Power Station Accident in 2011
+
+For data files related to the accident at the Fukushima Daiichi Nuclear Power Station, the original data were downloaded as `.xls` files from the official website in the data section. The Excels turned out to be messy after reading in R using `readxl::read_excel`, so we did some work to process and clean them. 
+
+For the fish-related files, 10 files covering from 2012 to 2021 were combined with `rbind()` and processed with multiple functions, and the number of samples below/exceeding the standard limit were counted using `summarize()` by year, type of fish species and prefecture. The agricultural products and milk-related files were pretty tidy so that pipes `%>%` were used to simply extract and calculate the features. Data cleaning for the absorbed dose to the thyroid-related files were similar to the fish-related files. Messy headlines were first removed and only useful data were kept. Then, 9 Tables were combined and processed differently with multiple functions based on the age group and area.
 
 For details of coding, please see [here.](https://github.com/yrwang1/nuclearpowerplant/blob/main/03-cleaning.Rmd)
 
@@ -26,9 +33,6 @@ dec_dt = read_excel("data/1988_Deposition.xlsx", skip=2)
 
 ```{r, message=FALSE}
 fd_dt_1 = read_excel("data/I131.xlsx", skip=2)
-```
-
-```{r, message=FALSE}
 fd_dt_2 = read_excel("data/Cs137.xlsx", skip=2)
 ```
 
@@ -169,5 +173,4 @@ thyroid_n_all<-rbind(thyroid_n_adult,thyroid_n_10,thyroid_n_1)
 thyroid_r_all<-rbind(thyroid_r_adult,thyroid_r_10,thyroid_r_1)
 thyroidall<-rbind(thyroid_f_all1,thyroid_n_all,thyroid_r_all)
 ```
-
 
