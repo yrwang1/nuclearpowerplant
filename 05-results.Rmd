@@ -33,6 +33,160 @@ ggplot(air, aes(x = concentration, y = fct_reorder2(Country, radionuclides == "I
   
 ```
 
+- Deposition
+
+```{r, message=FALSE}
+dec_dt = read_excel("data/1988 Deposition.xlsx", skip=2)
+```
+
+```{r, fig.width=10, fig.height=12}
+dec = dec_dt %>%
+  select(c("Country", "131I...4", "134Cs...5", "137Cs"))  %>%
+  rename("I-131" = `131I...4`, "Cs-134" = `134Cs...5`, "Cs-137" = `137Cs`) %>%
+  mutate(Continent = replace(Country, ! Country %in% region, NA)) %>%
+  fill(Continent) %>%
+  drop_na() %>%
+  pivot_longer(cols=!c(Country, Continent), names_to="radionuclides", values_to="density")
+
+ggplot(dec, aes(x = density, y = fct_reorder2(Country, radionuclides == "I-131", density, .desc = FALSE), color = radionuclides)) + 
+  facet_grid(reorder(Continent, -density, median)~radionuclides, scales = "free") + 
+  geom_point(size=1) + 
+  labs(title = "Deposition of radionuclides",
+       x = expression(paste('Deposition density (kBq ', m^{-2}, ")")),
+       y = "")
+```
+
+- Food
+
+I131
+
+```{r, message=FALSE}
+fd_dt_1 = read_excel("/Applications/STAT\ 5293/Final\ Project\ Data/Food/I131.xlsx", skip=2)
+```
+
+```{r}
+fd_1 = fd_dt_1 %>%
+  rename("lat" = `Latitude (degrees north)`, "milk" = `Milk products...5`, "leafy" = `Leafy vegetables...6`)  %>%
+  select(c("Country", "lat", "milk", "leafy"))  %>%
+  drop_na() %>%
+  pivot_longer(cols=!c(Country, lat), names_to="type", values_to="concentration")
+
+ggplot(fd_1, aes(x = lat, y = concentration)) + 
+  geom_point(size=1) +
+  facet_grid(.~type) +
+  labs(title = "Iodine-131 in foods during the first year",
+       x = "Latitude (degrees north)",
+       y = expression(paste('Normalized integrated concentrtaion (Bq a ', kg^{-1}, " per kBq ", m^{-2}, ")")))
+```
+
+Cs137
+
+```{r, message=FALSE}
+fd_dt_2 = read_excel("/Applications/STAT\ 5293/Final\ Project\ Data/Food/Cs137.xlsx", skip=2)
+```
+
+```{r}
+fd_2 = fd_dt_2 %>%
+  rename("milk" = `Milk products...7`, "grain" = `Grain products...8`, "leafy" = `Leafy vegetables...9`, "veg" = `Vegetables/fruit...10`, "meat" = `Meat...11`)  %>%
+  select(c("Country", "milk", "grain", "leafy", "veg", "meat"))  %>%
+  drop_na() %>%
+  left_join(fd_dt_1[,1:2], by="Country")  %>%
+  rename("lat" = `Latitude (degrees north)`) %>%
+  pivot_longer(cols=!c(Country, lat), names_to="type", values_to="concentration")
+
+ggplot(fd_2, aes(x = lat, y = concentration)) + 
+  geom_point(size=1) +
+  facet_grid(.~type) +
+  labs(title = "Caesium-137 in foods during the first year",
+       x = "Latitude (degrees north)",
+       y = expression(paste('Normalized integrated concentrtaion (Bq a ', kg^{-1}, " per kBq ", m^{-2}, ")")))
+```
+
+
+- Body
+
+```{r, message=FALSE}
+bd_dt_1 = read_excel("/Applications/STAT\ 5293/Final\ Project\ Data/Body/table\ 18.xlsx", skip=3)
+
+region_2 = c("Europe", "Asia", "North America")
+```
+
+```{r, fig.width=10, fig.height=10}
+bd_1 = bd_dt_1 %>%
+  rename("infants" = `Infant...2`, "adults" = `Adult...3`) %>%
+  select(c("Country", "infants", "adults"))  %>%
+  mutate(Continent = replace(Country, ! Country %in% region_2, NA)) %>%
+  fill(Continent) %>%
+  drop_na() %>%
+  pivot_longer(cols=!c(Country, Continent), names_to="type", values_to="deq")
+
+
+ggplot(bd_1, aes(x = deq, y = fct_reorder2(Country, type == "infants", deq, .desc = FALSE), color = type)) + 
+  facet_grid(reorder(Continent, -deq, median)~., scales = "free", space="free") + 
+  geom_point(size=1) + 
+  labs(title = "Country average of first-year Thyroid dose equivalent",
+       x = expression(paste('Thyroid dose equivalent (', mu, "Sv)")),
+       y = "")
+```
+
+```{r, message=FALSE}
+bd_dt_2 = read_excel("/Applications/STAT\ 5293/Final\ Project\ Data/Body/Belarus.xlsx", skip=1)
+
+bd_dt_3 = read_excel("/Applications/STAT\ 5293/Final\ Project\ Data/Body/Russia.xlsx", skip=1)
+
+bd_dt_4 = read_excel("/Applications/STAT\ 5293/Final\ Project\ Data/Body/Ukraine.xlsx", skip=1)
+```
+```{r, fig.width=12, fig.height=8}
+bd_2 = bd_dt_2 %>%
+  mutate("region" = "Belarus") %>%
+  rename("age" = `Age at exposure (years)`) %>%
+  fill(age) %>%
+  filter(Parameter == "Crude rate per 105 PY") %>%
+  select(!`1982–1985`) %>%
+  pivot_longer(cols=!c(age, Sex, Parameter, region), names_to="year", values_to="rate") 
+
+bd_3 = bd_dt_3 %>%
+  mutate("region" = "Russian Federation") %>%
+  rename("age" = `Age at exposure (years)`) %>%
+  fill(age) %>%
+  filter(Parameter == "Crude rate per 105 PY") %>%
+  pivot_longer(cols=!c(age, Sex, Parameter, region), names_to="year", values_to="rate") 
+
+bd_4 = bd_dt_4 %>%
+  mutate("region" = "Ukraine") %>%
+  rename("age" = `Age at exposure (years)`) %>%
+  fill(age) %>%
+  filter(Parameter == "Crude rate per 105 PY") %>%
+  pivot_longer(cols=!c(age, Sex, Parameter, region), names_to="year", values_to="rate") 
+
+combined_dt = rbind(bd_2, bd_3, bd_4) 
+
+line_dt = combined_dt %>%
+  filter(age != "Total (0–18)")
+
+line_dt$age = fct_relevel(line_dt$age, "5–9", after=1)
+ggplot(line_dt, aes(factor(year), y = rate, color = age)) +
+  geom_line(aes(group = age)) +
+  facet_grid(region~Sex,) +
+  labs(title = "Incidence rates of thyroid cancer in 1982–2015 in Belarus, Russian Federation and Ukraine",
+       x = "year",
+       y = "crude incidence rate (number of cases per 100,000 person-years)")
+
+
+hist_dt = combined_dt %>%
+  filter(age == "Total (0–18)")
+
+
+ggplot(hist_dt, aes(x = factor(year), y = rate, fill=Sex)) +
+  geom_bar(position="dodge", stat="identity") +
+  facet_grid(.~region,) +
+  labs(title = "Total Incidence rates of thyroid cancer in 1982–2015 in Belarus, Russian Federation and Ukraine",
+       x = "year",
+       y = "crude incidence rate (number of cases per 100,000 person-years)")
+```
+
+
+
 
 ## Accident at the Fukushima Daiichi Nuclear Power Station
 
