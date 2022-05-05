@@ -119,7 +119,7 @@ ggplot(hist_dt, aes(x = factor(year), y = rate, fill=Sex)) +
        y = "crude incidence rate (number of cases per 100,000 person-years)")
 ```
 
-## Accident at the Fukushima Daiichi Nuclear Power Station
+## The Fukushima-Daiichi Nuclear Power Station Accident in 2011
 
 
 
