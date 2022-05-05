@@ -1,6 +1,6 @@
 # Missing values
 
-# The Chernobyl Accident in 1986
+## The Chernobyl Accident in 1986
 
 ```{r}
 library(redav)

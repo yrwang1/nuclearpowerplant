@@ -1,8 +1,8 @@
 # Results
 
-## Chernobyl 
+## The Chernobyl Accident in 1986
 
-### Air
+### Radionuclide Releases to, Dispersion and Deposition in Air
 
 ```{r, warning=FALSE, fig.width=10, fig.height=12}
 air = air_dt %>%
@@ -24,12 +24,6 @@ ggplot(air, aes(x = concentration, y = fct_reorder2(Country, radionuclides == "I
 This plot is about the concentration of Iodine-131 (I-131), Caesium-134 (Cs-134), and Caesium-137 (Cs-137) in ground level air for these countries listed in the y-axis. As we can see from the plot, the concentration of I-131 is higher for all the countries than Cs-134 and Cs-137, whereas the concentration of Cs-134 is almost the lowest for all the countries. 
 
 In addition, these countries were grouped by "North Europe", "Central Europe", "West Europe", "South Europe", "West Asia", "East Asia", and "North America" and the order is determined by the median value of the concentration of these three radionuclides. It is clear that Central Europe suffers the most and North America suffers the least. This intuitively makes sense if we take their distances to Chernobyl into account. 
-
-Note these three x-axis have different scales. We designed the plot in this way since the concentration of I-131 is tremendously higher than the other two. If they used same scale, the points related to Cs-134 and Cs-137 would be very close to 0 and they would coincident.
-
-
-
-### Deposition
 
 Note these three x-axis have different scales. We designed the plot in this way since the concentration of I-131 is tremendously higher than the other two. If they used same scale, the points related to Cs-134 and Cs-137 would be very close to 0 and they would coincident.
 
@@ -58,9 +52,9 @@ In addition, these countries were grouped in the same way as the previous plot  
 
 Note these three x-axis have different scales. We designed the plot in this way since the deposition of I-131 is tremendously higher than the other two. If they used same scale, the points related to Cs-134 and Cs-137 would be very close to 0 and they would coincident.
 
-### Food
+### Radionuclide Releases to, Dispersion and Deposition in
 
-I-131
+- I-131
 
 ```{r}
 fd_1 = fd_dt_1 %>%
@@ -76,7 +70,7 @@ ggplot(fd_1, aes(x = lat, y = concentration)) +
        y = expression(paste('Normalized integrated concentrtaion (Bq a ', kg^{-1}, " per kBq ", m^{-2}, ")")))
 ```
 
-Cs137
+- Cs137
 
 ```{r}
 fd_2 = fd_dt_2 %>%
@@ -95,7 +89,7 @@ ggplot(fd_2, aes(x = lat, y = concentration)) +
 ```
 
 
-- Body
+### Assessment of Doses to the Public
 
 ```{r, fig.width=10, fig.height=10}
 bd_1 = bd_dt_1 %>%
