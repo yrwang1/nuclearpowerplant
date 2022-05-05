@@ -1,4 +1,13 @@
 # Data transformation
+
+- The Chernobyl Accident in 1986
+
+As mentioned in the previous section, the original data in the reports published by UNSCEAR are organized in the form of tables. Therefore, we used the online PDF to Excel converter to transform those tables to `.xlxs` files. In this way, by using `readxl::read_excel` and setting `skip` to some value, we were able to drop messy headlines and get nice and neat data frames.
+
+The reports claim that external irradiation from radioactive materials dumped on the ground and consumption of contaminated food are the two key paths to consider in the dose assessment. For radionuclides, we only consider  Iodine-131 (I-131), Caesium-134 (Cs-134), and Caesium-137 (Cs-137) since they are the most significant contributions to total exposure and have been extensively considered by many countries. For contaminated food, only the most fundamental foods have been considered: milk, grains, leafy greens, other vegetables and fruits, and meat. Most people's food intake can be classified into one of these five groups. Other foods, such as mushrooms and lake fish, have been found to absorb radionuclides and may be essential to some consumers, but they have little impact on collective dosage estimates. Therefore, we only focus on these variables in this project.
+
+During the process of data cleaning, the most frequently used packages are `dplyr` and `tidyr`, which help manipulate the data frames. The functions `select`, `pivot_longer`, and `fill` were applied to almost every data frame in order to select the variables we want and transform the data into a form for `ggplot`.
+
 For data files related to the accident at the Fukushima Daiichi Nuclear Power Station, the original data were downloaded as `.xls` files from the official website in the data section. The Excels turned out to be messy after reading in R using `readxl::read_excel`, so we did a lot of work processing and cleaning them.
 
 For the fish-related files, messy headlines were first removed and only useful data were kept. Then, 10 files covering from 2012 to 2021 were combined and processed with multiple functions, and the number of samples below/exceeding the standard limit were counted using `summarise()` by year, type of fish species and prefecture.
