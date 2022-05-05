@@ -1,5 +1,38 @@
 # Results
-## Ch
+## Chernobyl 
+
+- Air
+
+```{r, warning=FALSE}
+library(readxl)
+air_dt = read_excel("data/1988 Air.xlsx", skip=2)
+
+region = c("North Europe", "Central Europe", "West Europe", "South Europe", "West Asia", "East Asia", "North America")
+```
+
+```{r, warning=FALSE, fig.width=10, fig.height=12}
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(forcats)
+air = air_dt %>%
+  select(c("Country", "131I", "134Cs", "137Cs"))  %>%
+  rename("I-131" = `131I`, "Cs-134" = `134Cs`, "Cs-137" = `137Cs`) %>%
+  mutate(Continent = replace(Country, ! Country %in% region, NA)) %>%
+  fill(Continent) %>%
+  drop_na() %>%
+  pivot_longer(cols=!c(Country, Continent), names_to="radionuclides", values_to="concentration")
+
+
+ggplot(air, aes(x = concentration, y = fct_reorder2(Country, radionuclides == "I-131", concentration, .desc = FALSE), color = radionuclides)) + 
+  facet_grid(reorder(Continent, -concentration, median)~radionuclides, scales = "free") + 
+  geom_point(size=1) + 
+  labs(title = "Concentration of radionuclides in ground level air",
+       x = expression(paste('Concentration (Bq d ', m^{-3}, ")")),
+       y = "")
+  
+```
+
 
 ## Accident at the Fukushima Daiichi Nuclear Power Station
 
