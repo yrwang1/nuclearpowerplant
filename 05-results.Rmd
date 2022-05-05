@@ -21,6 +21,14 @@ ggplot(air, aes(x = concentration, y = fct_reorder2(Country, radionuclides == "I
        y = "")
 ```
 
+This plot is about the concentration of Iodine-131 (I-131), Caesium-134 (Cs-134), and Caesium-137 (Cs-137) in ground level air for these countries listed in the y-axis. As we can see from the plot, the concentration of I-131 is higher for all the countries than Cs-134 and Cs-137, whereas the concentration of Cs-134 is almost the lowest for all the countries. 
+
+In addition, these countries were grouped by "North Europe", "Central Europe", "West Europe", "South Europe", "West Asia", "East Asia", and "North America" and the order is determined by the median value of the concentration of these three radionuclides. It is clear that Central Europe suffers the most and North America suffers the least. This intuitively makes sense if we take their distances to Chernobyl into account. 
+
+Note these three x-axis have different scales. We designed the plot in this way since the concentration of I-131 is tremendously higher than the other two. If they used same scale, the points related to Cs-134 and Cs-137 would be very close to 0 and they would coincident.
+
+
+
 ### Deposition
 
 
@@ -41,6 +49,13 @@ ggplot(dec, aes(x = density, y = fct_reorder2(Country, radionuclides == "I-131",
        y = "")
 ```
 
+This plot is about the deposition of Iodine-131 (I-131), Caesium-134 (Cs-134), and Caesium-137 (Cs-137) for the same countries in the previous plot. The deposition of radioactive materials is mainly related to rainfall. Again, the deposition of I-131 is higher for all the countries than Cs-134 and Cs-137, whereas the concentration of Cs-134 is almost the lowest for all the countries. 
+
+In addition, these countries were grouped in the same way as the previous plot  and the order is determined by the median as well. However, the order changes for other groups except Central Europe, East Asia, and North America. This might be due to the irregularity of weather. As mentioned before, the deposition pattern is related to rainfall. However, the distances to Chernobyl can still explain the unchanged order of Central Europe, East Asia, and North America. 
+
+Note these three x-axis have different scales. We designed the plot in this way since the deposition of I-131 is tremendously higher than the other two. If they used same scale, the points related to Cs-134 and Cs-137 would be very close to 0 and they would coincident.
+
+
 ### Food
 
 I-131
@@ -55,7 +70,7 @@ fd_1 = fd_dt_1 %>%
 ggplot(fd_1, aes(x = lat, y = concentration)) +
   geom_point(size=1) +
   facet_grid(.~type) +
-  labs(title = "Iodine-131 in foods during the first year", 
+  labs(title = "Iodine-131 in foods during the first year for different countries", 
        x = "Latitude (degrees north)", 
        y = expression(paste('Normalized integrated concentrtaion (Bq a ', kg^{-1}, " per kBq ", m^{-2}, ")")))
 ```
@@ -74,7 +89,7 @@ fd_2 = fd_dt_2 %>%
 ggplot(fd_2, aes(x = lat, y = concentration)) +
   geom_point(size=1) +
   facet_grid(.~type) +
-  labs(title = "Caesium-137 in foods during the first year", 
+  labs(title = "Caesium-137 in foods during the first year for different countries", 
        x = "Latitude (degrees north)", 
        y = expression(paste('Normalized integrated concentrtaion (Bq a ', kg^{-1}, " per kBq ", m^{-2}, ")")))
 ```
