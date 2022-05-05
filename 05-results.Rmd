@@ -21,8 +21,13 @@ ggplot(air, aes(x = concentration, y = fct_reorder2(Country, radionuclides == "I
        y = "")
 ```
 
-### Deposition
+This plot is about the concentration of Iodine-131 (I-131), Caesium-134 (Cs-134), and Caesium-137 (Cs-137) in ground level air for these countries listed in the y-axis. As we can see from the plot, the concentration of I-131 is higher for all the countries than Cs-134 and Cs-137, whereas the concentration of Cs-134 is almost the lowest for all the countries. 
 
+In addition, these countries were grouped by "North Europe", "Central Europe", "West Europe", "South Europe", "West Asia", "East Asia", and "North America" and the order is determined by the median value of the concentration of these three radionuclides. It is clear that Central Europe suffers the most and North America suffers the least. This intuitively makes sense if we take their distances to Chernobyl into account. 
+
+Note these three x-axis have different scales. We designed the plot in this way since the concentration of I-131 is tremendously higher than the other two. If they used same scale, the points related to Cs-134 and Cs-137 would be very close to 0 and they would coincident.
+
+### Deposition
 
 ```{r, fig.width=10, fig.height=12}
 dec = dec_dt %>%
@@ -41,6 +46,12 @@ ggplot(dec, aes(x = density, y = fct_reorder2(Country, radionuclides == "I-131",
        y = "")
 ```
 
+This plot is about the deposition of Iodine-131 (I-131), Caesium-134 (Cs-134), and Caesium-137 (Cs-137) for the same countries in the previous plot. The deposition of radioactive materials is mainly related to rainfall. Again, the deposition of I-131 is higher for all the countries than Cs-134 and Cs-137, whereas the concentration of Cs-134 is almost the lowest for all the countries. 
+
+In addition, these countries were grouped in the same way as the previous plot  and the order is determined by the median as well. However, the order changes for other groups except Central Europe, East Asia, and North America. This might be due to the irregularity of weather. As mentioned before, the deposition pattern is related to rainfall. However, the distances to Chernobyl can still explain the unchanged order of Central Europe, East Asia, and North America. 
+
+Note these three x-axis have different scales. We designed the plot in this way since the deposition of I-131 is tremendously higher than the other two. If they used same scale, the points related to Cs-134 and Cs-137 would be very close to 0 and they would coincident.
+
 ### Food
 
 I-131
@@ -51,11 +62,10 @@ fd_1 = fd_dt_1 %>%
   select(c("Country", "lat", "milk", "leafy"))  %>%
   drop_na() %>%
   pivot_longer(cols=!c(Country, lat), names_to="type", values_to="concentration")
-
 ggplot(fd_1, aes(x = lat, y = concentration)) +
   geom_point(size=1) +
   facet_grid(.~type) +
-  labs(title = "Iodine-131 in foods during the first year", 
+  labs(title = "Iodine-131 in foods during the first year for different countries", 
        x = "Latitude (degrees north)", 
        y = expression(paste('Normalized integrated concentrtaion (Bq a ', kg^{-1}, " per kBq ", m^{-2}, ")")))
 ```
@@ -70,11 +80,10 @@ fd_2 = fd_dt_2 %>%
   left_join(fd_dt_1[,1:2], by="Country")  %>%
   rename("lat" = `Latitude (degrees north)`) %>%
   pivot_longer(cols=!c(Country, lat), names_to="type", values_to="concentration")
-
 ggplot(fd_2, aes(x = lat, y = concentration)) +
   geom_point(size=1) +
   facet_grid(.~type) +
-  labs(title = "Caesium-137 in foods during the first year", 
+  labs(title = "Caesium-137 in foods during the first year for different countries", 
        x = "Latitude (degrees north)", 
        y = expression(paste('Normalized integrated concentrtaion (Bq a ', kg^{-1}, " per kBq ", m^{-2}, ")")))
 ```
@@ -90,7 +99,6 @@ bd_1 = bd_dt_1 %>%
   fill(Continent) %>%
   drop_na() %>%
   pivot_longer(cols=!c(Country, Continent), names_to="type", values_to="deq")
-
 ggplot(bd_1, aes(x = deq, y = fct_reorder2(Country, type == "infants", deq, .desc = FALSE), color = type)) +
   geom_point(size=1) +
   facet_grid(reorder(Continent, -deq, median)~., scales = "free", space="free") +
@@ -99,7 +107,6 @@ ggplot(bd_1, aes(x = deq, y = fct_reorder2(Country, type == "infants", deq, .des
        y = "")
 ```
 
-
 ```{r, fig.width=12, fig.height=8}
 ggplot(line_dt, aes(factor(year), y = rate, color = age)) +
   geom_line(aes(group = age)) +
@@ -107,10 +114,8 @@ ggplot(line_dt, aes(factor(year), y = rate, color = age)) +
   labs(title = "Incidence rates of thyroid cancer in 1982–2015 in Belarus, Russian Federation and Ukraine",
        x = "year",
        y = "crude incidence rate (number of cases per 100,000 person-years)")
-
 hist_dt = combined_dt %>%
   filter(age == "Total (0–18)")
-
 ggplot(hist_dt, aes(x = factor(year), y = rate, fill=Sex)) +
   geom_bar(position="dodge", stat="identity") +
   facet_grid(.~region,) +
@@ -122,10 +127,8 @@ ggplot(hist_dt, aes(x = factor(year), y = rate, fill=Sex)) +
 ## The Fukushima-Daiichi Nuclear Power Station Accident in 2011
 
 
-
-### RADIONUCLIDE RELEASES TO, DISPERSION AND DEPOSITION IN, Food
+### Radionuclide Releases to, Dispersion and Deposition in Food
 #### Seafood
-
 
 
 1. Marine Fish Species
@@ -221,7 +224,7 @@ Therefore, there is little impact on raw milk after the first year of the accide
 The two most important radionuclides are iodine and cesium, with varying dose levels. Iodine-131 is first absorbed by the thyroid after ingestion or inhalation, but it dissipates quickly because of its short half-life (8 days).
 The two isotopes of cesium (cesium-134 and cesium-137) have relatively long half-lives (2 and 30 years, respectively), and the exposure to the human body is fairly uniform.
 
-The Committee’s estimates of municipality- and prefecture-average doses are intended to be characteristic of the average doses to the thyroid absorbed by people living in each municipality or prefecture for the first year after the Fukushima-Daiichi nuclear power station accident. These data are provided for each age group (adults, 10-year-old children and one-year-old infants) for each geographical area group (all non-evacuated districts within Fukushima Prefecture, districts close to Fukushima prefectures (Chiba, Gunma, Ibaraki, Iwate, Miyagi and Tochigi, labeled as `Neighbouring`), and for all remaining prefectures in Japan (labeled as `Remainder`)). And four principal pathways by which members of the public can be exposed for the radioactive material released to the atmosphere are considered and summed up.
+The Committee’s estimates of municipality- and prefecture-average doses are intended to be characteristic of the average doses to the thyroid absorbed by people living in each municipality or prefecture for the first year after the Fukushima-Daiichi nuclear power station accident. 
 
 Due to the fact that the amount of data is too large to run in R, a dot plot is performed instead of a histogram or ridgeline plot.
 
@@ -248,5 +251,4 @@ ggplot(data=thyroid_f_all,aes(x=value,y=reorder(group,value,median))) +
   ylab("Age Group")
 ```
 
-The ridgeline plot allow us to easily compare distributions of the absorbed doses. We see that the distributions are multimodal that have many peaks
-The distribution of speeds for dawn, day, and dusk are all very similar and basically unimodal about ~125 knots, with some collisions happening at faster speeds. The distribution of speeds at night are very different – it is almost trimodal with modes at ~125 knots, 200 knots, and 250 knots.
+The ridgeline plot allow us to easily compare distributions of the absorbed doses. We see that the distributions for all age groups are multimodal that have many peaks. The younger the higher doses were absorbed, and the absorb range is wider.

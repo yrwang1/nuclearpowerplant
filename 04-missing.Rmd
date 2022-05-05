@@ -1,3 +1,9 @@
 # Missing values
 
 # The Chernobyl Accident in 1986
+
+```{r}
+library(redav)
+miss<-as.data.frame(read_excel(path = path.expand("data/index-101.xls")))
+plot_missing(miss, percent = FALSE)
+```

@@ -6,6 +6,8 @@ The data used in this project were obtained from reports published in 1988 and 2
 
 ## The Fukushima-Daiichi Nuclear Power Station Accident in 2011
 
-Data used for Fukushima-Daiichi Nuclear Power Station accident were obtained from [UNSCEAR 2020/2021 Report](https://www.unscear.org/unscear/en/publications/2020_2021_2.html) and Ministry of Agriculture, Forestry and Fisheries [(MAFF).](https://www.maff.go.jp/index.html)
+Data used for Fukushima-Daiichi Nuclear Power Station accident were obtained from [UNSCEAR 2020/2021 Report](https://www.unscear.org/unscear/en/publications/2020_2021_2.html) and Ministry of Agriculture, Forestry and Fisheries [(MAFF).](https://www.maff.go.jp/index.html) 
 
-https://www.unscear.org/unscear/en/fukushima.html
+The datasets from UNSCEAR report contains the evaluation of doses for public due to the accident at the Fukushima Daiichi Nuclear Power Station. These data are provided for each age group (adults, 10-year-old children and one-year-old infants) for each geographical area group (all non-evacuated districts within Fukushima Prefecture, districts close to Fukushima prefectures (Chiba, Gunma, Ibaraki, Iwate, Miyagi and Tochigi, labeled as `Neighbouring`), and for all remaining prefectures in Japan (labeled as `Remainder`)). And four principal pathways by which members of the public can be exposed for the radioactive material released to the atmosphere are considered and summed up.
+
+The MAFF released the latest results of the detection of radioactive substances (mainly radioactive cesium) in agricultural, livestock and aquatic products after the accident.
