@@ -1,6 +1,173 @@
 # Data transformation
+For data files related to the accident at the Fukushima Daiichi Nuclear Power Station, the original data were downloaded as `.xls` files from the official website in the data section. The Excels turned out to be messy after reading in R using `readxl::read_excel`, so we did a lot of work processing and cleaning them.
 
-```{r}
+For the fish-related files, messy headlines were first removed and only useful data were kept. Then, 10 files covering from 2012 to 2021 were combined and processed with multiple functions, and the number of samples below/exceeding the standard limit were counted using `summarise()` by year, type of fish species and prefecture.
 
+The agricultural products and milk-related files were pretty tidy so that pipes `%>%` were used to simply extract and calculate the features.
+
+Data cleaning for the absorbed dose to the thyroid-related files were similar to the fish-related files. Messy headlines were first removed and only useful data were kept. Then, 9 Tables were combined and processed differently with multiple functions based on the age group and area.
+
+For details of coding, please see [here.](https://github.com/yrwang1/nuclearpowerplant/blob/main/03-cleaning.Rmd)
+
+```{r, warning=FALSE}
+library(tidyverse)
+library(stringr)
+library(readxl)
+library(ggplot2)
+library(forcats)
+
+air_dt = read_excel("data/1988_Air.xlsx", skip=2)
+region = c("North Europe", "Central Europe", "West Europe", "South Europe", "West Asia", "East Asia", "North America")
 ```
+
+```{r, message=FALSE}
+dec_dt = read_excel("data/1988_Deposition.xlsx", skip=2)
+```
+
+```{r, message=FALSE}
+fd_dt_1 = read_excel("data/I131.xlsx", skip=2)
+```
+
+```{r, message=FALSE}
+fd_dt_2 = read_excel("data/Cs137.xlsx", skip=2)
+```
+
+```{r, message=FALSE}
+bd_dt_1 = read_excel("data/table_18.xlsx", skip=3)
+region_2 = c("Europe", "Asia", "North America")
+```
+
+```{r, message=FALSE}
+bd_dt_2 = read_excel("data/Belarus.xlsx", skip=1)
+bd_dt_3 = read_excel("data/Russia.xlsx", skip=1)
+bd_dt_4 = read_excel("data/Ukraine.xlsx", skip=1)
+
+bd_2 = bd_dt_2 %>%
+  mutate("region" = "Belarus") %>%
+  rename("age" = `Age at exposure (years)`) %>%
+  fill(age) %>%
+  filter(Parameter == "Crude rate per 105 PY") %>%
+  select(!`1982–1985`) %>%
+  pivot_longer(cols=!c(age, Sex, Parameter, region), names_to="year", values_to="rate") 
+
+bd_3 = bd_dt_3 %>%
+  mutate("region" = "Russian Federation") %>%
+  rename("age" = `Age at exposure (years)`) %>%
+  fill(age) %>%
+  filter(Parameter == "Crude rate per 105 PY") %>%
+  pivot_longer(cols=!c(age, Sex, Parameter, region), names_to="year", values_to="rate") 
+
+bd_4 = bd_dt_4 %>%
+  mutate("region" = "Ukraine") %>%
+  rename("age" = `Age at exposure (years)`) %>%
+  fill(age) %>%
+  filter(Parameter == "Crude rate per 105 PY") %>%
+  pivot_longer(cols=!c(age, Sex, Parameter, region), names_to="year", values_to="rate") 
+
+combined_dt = rbind(bd_2, bd_3, bd_4) 
+line_dt = combined_dt %>%
+  filter(age != "Total (0–18)")
+line_dt$age = fct_relevel(line_dt$age, "5–9", after=1)
+```
+
+```{r,message=FALSE}
+# Food- Marine fish and Freshwater fish
+fish<-function(data){
+  fish<-as.data.frame(read_excel(path = path.expand(data)))
+  fish<-fish[-c(1:which(grepl('Date',fish$...3))-1),-1]
+  fish[1,5]='Area'
+  fish[1,9]='Cs Total'
+  colnames(fish)=fish[1,]
+  fish<-fish[-1,-c(3,6:8,10:12)]
+  fish <- fish %>%
+  mutate(Date=as.Date(as.integer(Date), origin = "1899-12-30"),
+         Year=format(Date, format = "%Y"),
+         Area=ifelse(grepl('inland waters|River',fish$`Landing port or area`),"Inland waters","Offshore"))
+  fish$`Cs Total`[fish$`Cs Total`=='Not detectable'] <- 0
+
+  fish<-fish%>%
+  dplyr::select(Year,Prefecture,Area,`Cs Total`)%>%
+  mutate(Prefecture=ifelse(Prefecture=='Fukushima','Fukushima Prefecture','Other Prefectures'),
+         `Cs Total`=round(as.numeric(`Cs Total`),2))%>%
+  group_by(Year,Area, Prefecture)%>%
+  summarise(below=sum(`Cs Total`<100),exceed=sum(`Cs Total`>=100))
+  return(fish)
+}
+f2012<-fish("data/e130329_2.xls")
+f2013<-fish("data/e140331_2.xls")
+f2014<-fish("data/e150331_2.xls")
+f2015<-fish("data/e160331.xls")
+f2016<-fish("data/index-14.xls")
+f2017<-fish("data/index-15.xls")
+f2018<-fish("data/index-101.xls")
+f2019<-fish("data/index-100.xls")
+f2020<-fish("data/index-175.xls")
+f2021<-fish("data/index-2.xls")
+
+fishall<-rbind(f2012,f2013,f2014,f2015,f2016,f2017,f2018,f2019,f2020,f2021)%>%group_by(Year,Area,Prefecture)%>%
+  summarise(below=sum(below),exceed=sum(exceed))
+```
+
+```{r,warning=FALSE,message=FALSE}
+#agricultural products (milk, meat, vegetables,etc.)
+agri<-as.data.frame(read_excel(path = path.expand("data/algri_product.xls")))
+colnames(agri)<-c("Year","Group","Total","low","mid","exceed")
+agri<-agri%>%
+  mutate(below=mid+low)%>%
+  dplyr::select(Year,Group,Total, below,exceed)
+  
+milk<-as.data.frame(read_excel(path = path.expand("data/milk.xls")))%>%
+  arrange(Year)%>%
+  mutate(Group="milk")%>%
+  dplyr::select(Year,Group,everything())
+colnames(milk)<-c("Year","Group","Total","below","exceed")
+```
+
+```{r,message=FALSE}
+#thyroid
+thyroid<-function(tab,g,pl){
+  df<-as.data.frame(read_excel(path = path.expand("data/thyroid2013.xls"),sheet = tab))
+  colnames(df)=df[1,]
+  df=df[-1,]
+  df<-df%>%filter(!is.na(`Population in 2010 (persons)`))
+  a=rep(df$Total,df$`Population in 2010 (persons)`)
+  a=data.frame(group=g,value=a,Area=pl)%>%
+  mutate(value=as.numeric(value))
+  return(a)
+}
+thyroid_f_adult<-thyroid("Table 1","adult","Fukushima Prefecture")
+thyroid_f_10<-thyroid("Table 3","10-year-old child","Fukushima Prefecture")
+thyroid_f_1<-thyroid("Table 5","one-year-old infant","Fukushima Prefecture")
+thyroid_f_all<-rbind(thyroid_f_adult,thyroid_f_10,thyroid_f_1)
+
+thyroidorig<-function(tab,g,pl){
+  df<-as.data.frame(read_excel(path = path.expand("data/thyroid2013.xls"),sheet = tab))
+  colnames(df)=df[1,]
+  df=df[-1,]
+  df<-df%>%
+  filter(!is.na(`Population in 2010 (persons)`))%>%
+  mutate(group=g,
+         Area=pl,
+         `Population in 2010 (persons)`=as.numeric(`Population in 2010 (persons)`),
+         Total=as.numeric(Total))
+  return(df)
+}
+thyroid_f_adult1<-thyroidorig("Table 1","adult","Fukushima Prefecture")
+thyroid_f_101<-thyroidorig("Table 3","10-year-old child","Fukushima Prefecture")
+thyroid_f_11<-thyroidorig("Table 5","1-year-old infant","Fukushima Prefecture")
+
+thyroid_n_adult<-thyroidorig("Table 7","adult","Neighbouring")
+thyroid_n_10<-thyroidorig("Table 9","10-year-old child","Neighbouring")
+thyroid_n_1<-thyroidorig("Table 10","1-year-old infant","Neighbouring")
+
+thyroid_r_adult<-thyroidorig("Table 11","adult","Remainder")
+thyroid_r_10<-thyroidorig("Table 13","10-year-old child","Remainder")
+thyroid_r_1<-thyroidorig("Table 15","1-year-old infant","Remainder")
+
+thyroid_f_all1<-rbind(thyroid_f_adult1,thyroid_f_101,thyroid_f_11)
+thyroid_n_all<-rbind(thyroid_n_adult,thyroid_n_10,thyroid_n_1)
+thyroid_r_all<-rbind(thyroid_r_adult,thyroid_r_10,thyroid_r_1)
+thyroidall<-rbind(thyroid_f_all1,thyroid_n_all,thyroid_r_all)
+```
+
 
