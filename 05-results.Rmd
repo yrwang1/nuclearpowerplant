@@ -27,6 +27,12 @@ In addition, these countries were grouped by "North Europe", "Central Europe", "
 
 Note these three x-axis have different scales. We designed the plot in this way since the concentration of I-131 is tremendously higher than the other two. If they used same scale, the points related to Cs-134 and Cs-137 would be very close to 0 and they would coincident.
 
+
+
+### Deposition
+
+Note these three x-axis have different scales. We designed the plot in this way since the concentration of I-131 is tremendously higher than the other two. If they used same scale, the points related to Cs-134 and Cs-137 would be very close to 0 and they would coincident.
+
 ### Deposition
 
 ```{r, fig.width=10, fig.height=12}
