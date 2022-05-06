@@ -237,7 +237,7 @@ ggplot(data=thyroidall,aes(x=round(Total,2),y=`Population in 2010 (persons)`,gro
   xlab("Absorbed Dose to the Thyroid (mGy)")
 ```
 
-The plot clearly showed the trend that younger people tend to absorb higher dose to the thyroid than older people. It's also obvious that the closer to Fukushima prefecture, where the accident occurred, the higher dose absorbed to the thyroid.
+The plot clearly showed the trend that younger people tend to absorb higher doses to the thyroid than older people. It's also obvious that the closer to Fukushima prefecture, where the accident occurred, the higher dose absorbed to the thyroid.
 
 Now let's take a closer look at Fukushima prefecture.
 
@@ -251,4 +251,5 @@ ggplot(data=thyroid_f_all,aes(x=value,y=reorder(group,value,median))) +
   ylab("Age Group")
 ```
 
-The ridgeline plot allow us to easily compare distributions of the absorbed doses. We see that the distributions for all age groups are multimodal that have many peaks. The younger the higher doses were absorbed, and the absorb range is wider.
+The ridgeline plot allows us to easily compare distributions of the absorbed doses for people in Fukushima Prefecture (excluding evacuated areas) in the first year. We see that the distributions for all age groups are multimodal that have many peaks, and the shape of the curves for the three age groups looks very similar. The younger the age, the higher the absorbed dose, and the absorbed dose for one-year-old infants is about 4-5 times that of the adults. Meanwhile, the absorption range of the elderly is narrower.
+

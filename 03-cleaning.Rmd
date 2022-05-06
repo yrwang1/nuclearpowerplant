@@ -2,7 +2,7 @@
 
 - The Chernobyl Accident in 1986
 
-The original data published by UNSCEAR are organized in the form of tables. Therefore, we used the online PDF to Excel converter to transform those tables to `.xlxs` files. In this way, by using `readxl::read_excel` and setting `skip` to some value, we were able to drop messy headlines and get nice and neat data frames.
+We used the online PDF to Excel converter to transform the tables published by UNSCEAR to `.xlxs` files. By using `readxl::read_excel` and setting `skip` to some value, we were able to drop messy headlines and get nice and neat data frames.
 
 The reports claim that external irradiation from radioactive materials dumped on the ground and consumption of contaminated food are the two key paths to consider in the dose assessment (the term `dose assessment` means estimating absorbed doses received by individuals as a result of exposure to ionizing radiation). For radionuclides, we only consider Iodine-131, Caesium-134, and Caesium-137 since they are the most significant contributions to total exposure and have been extensively considered by many countries. For contaminated food, only the most fundamental foods have been considered: milk, grains, leafy greens, other vegetables and fruits, and meat. Most people's food intake can be classified into one of these five groups. Other foods, such as mushrooms and lake fish, have been found to absorb radionuclides and may be essential to some consumers, but they have little impact on collective dosage estimates. Therefore, we only focus on these variables in this project.
 
