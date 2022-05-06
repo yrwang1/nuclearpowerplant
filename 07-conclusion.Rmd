@@ -1,2 +1,15 @@
 # Conclusion
 
+## The Chernobyl Accident in 1986
+
+The previous plots show the concentration in ground air, deposition, concentration in foods and irradiation to thyroid of radioactive materials (Iodine-131, Caesium-134, and Caesium-137) after the Chernobyl Accident. 
+
+We can clearly see that this accident has a worldwide effect, which is surprising to me. Of course, the further the country is to Chernobyl, the less concentration it will be. However, the deposition patter is comparabaly irregular.
+
+For food contamination, we found out that there seem to be a latitudinal dependence for the normalized concentration of I-131 and Cs-137 in foods we investigated in this project. In addition, those plots suggest people not to eat meat after the exposure from Cs-137.
+
+Lastly, infants in many countries generally suffer more from the external radiation to thyroid than adults and the incidence rates of thyroid cancer for people (0-18 years old) who live near Chernobyl do increase over time. 
+
+One limitation would be that the data about the Chernobyl Accident is mainly around 1986, which makes it very difficult to study the long-term trend of the radioactive materials and their effects to food or human health. Therefore, my future direction would be looking for some up-to-date datasets or investigating if there would be some substitute data for displaying long-term trends (for example, the death rate of people live near the Chernobyl Accident).
+
+By analyzing these plots, the lesson I learned is that I get a sense of the potential threat to human health after a nuclear power station leak, which may help guide with emergency self-rescue before any assistance comes. For example, we could store foods that are less likely to be affected by radiation (vegetables or fruits), and protect the body parts that are sensitive to nuclear radiation (thyroid), especially for infants. 
