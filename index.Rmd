@@ -7,4 +7,10 @@ site: bookdown::bookdown_site
 
 # Introduction
 
+This project is created by Yarong Wang (yw3598) and Qian Zhang (qz2416) for STAT GR5293 Final Project.
 
+On 26 April 1986, an accident occurred at the fourth unit of the Chernobyl nuclear power station. It was the most serious accident ever in the history of the nuclear power industry. The accident took many lives, caused serious social and psychological damage to the lives of the affected people, and brought huge economic losses to the entire region. On March 11, 2011, the Fukushima Daiichi Nuclear Power Plant (FDNPS) suffered significant damage from the magnitude 9.0 earthquake in eastern Japan and the subsequent tsunami. It was the largest civilian nuclear accident since Chernobyl, which resulted in the evacuation of tens of thousands of people. Until now, accidents about nuclear power plants have always been in the headlines, just as the safety of the Chernobyl nuclear power plant has been closely watched during the war between Russia and Ukraine.
+
+Nuclear power plant safety is about the safety of people and the environment, so we want to take a look at the impacts of nuclear power station leaks, how these effects change over time, and what are the implications of past nuclear leaks for the future through the two major nuclear safety incidents that have occurred.
+
+This is the link to GitHub that contains all our work for the project https://github.com/yrwang1/nuclearpowerplant.
