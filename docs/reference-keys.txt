@@ -4,12 +4,11 @@ the-chernobyl-accident-in-1986
 the-fukushima-daiichi-nuclear-power-station-accident-in-2011
 data-transformation
 missing-values
-the-chernobyl-accident-in-1986-1
 results
-the-chernobyl-accident-in-1986-2
+the-chernobyl-accident-in-1986-1
 radionuclide-releases-to-dispersion-and-deposition-in-air
 deposition
-radionuclide-releases-to-dispersion-and-deposition-in
+radionuclide-releases-to-dispersion-and-deposition-of-different-radioactive-elements
 assessment-of-doses-to-the-public
 the-fukushima-daiichi-nuclear-power-station-accident-in-2011-1
 radionuclide-releases-to-dispersion-and-deposition-in-food

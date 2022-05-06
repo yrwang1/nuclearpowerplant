@@ -52,7 +52,7 @@ In addition, these countries were grouped in the same way as the previous plot  
 
 Note these three x-axis have different scales. We designed the plot in this way since the deposition of I-131 is tremendously higher than the other two. If they used same scale, the points related to Cs-134 and Cs-137 would be very close to 0 and they would coincident.
 
-### Radionuclide Releases to, Dispersion and Deposition in
+### Radionuclide Releases to, Dispersion and Deposition of different radioactive elements
 
 - I-131
 
@@ -75,8 +75,6 @@ This plot shows the normalized concentration of Iodine-131 (I-131) in leafy vege
 For each kind of food, there seem to be a negative linear latitudinal dependence for the normalized concentration of I-131, which makes sense since distances to the Chernobyl do affect the concentration of radioactive materials. In addition, the line seems to be steeper for leafy vegetables than milk.
 
 The normalized concentration of I-131 of these two foods seem to be at similar level, but leafy vegetables seems to have several outliers, which shows a comparatively higher concentration of I-131 per deposition density. This suggests us to choose milk instead of leafy vegetables for safety.
-
-
 
 - Cs137
 
@@ -104,7 +102,6 @@ Since this is about normalized concentration, we cannot really compare the level
 
 The normalized concentration of Cs-137 of grain, leafy vegetables, and milk products seem to be at a similar level. Meat seems to have many outliers and a higher level of concentration of Cs-137. In addition, vegetables or fruits have several outliers as well, but the majority points are located in very bottom. This suggests us not to choose meat for safety.
 
-
 ### Assessment of Doses to the Public
 
 ```{r, fig.width=10, fig.height=10}
@@ -127,8 +124,6 @@ The term 'dose equivalent' means measuring the biological damage to living tissu
 
 As we can see, the infants suffered more than adults in general. More specifically, the thyroid of infants in Bulgaria, Greece, Romania, Switzerland, and Yugoslavia were strongly damaged by exposure. The situations for the countries in the bottom shows that distances to the Chernobyl help reduce the exposures of radioactive materials.
 
-
-
 ```{r, fig.width=12, fig.height=8}
 ggplot(line_dt, aes(factor(year), y = rate, color = age)) +
   geom_line(aes(group = age)) +
@@ -143,13 +138,12 @@ for people living in Belarus, Russian Federation (Bryansk, Kaluga, Orel and Tula
 
 As we can see, the rates are increasing for both female and male in all age groups "0-4", "5-9", "10-14", "15-18" from 1982 to 2015. Note that this plot does not indicate there is a causation relationship between the Chernobyl accident and the increasing rates, it just shows a fact that the incidence rates of thyroid cancer did increasing for people in all age groups (under 18 years). Since we are using same scales for x and y, respectively, it is easy to see that the incidence rates of thyroid cancer for female are higher than those of male in general and incidence rates of thyroid cancer for people in Belarus are higher than those in two other regions. 
 
-
 ## The Fukushima-Daiichi Nuclear Power Station Accident in 2011
-
 
 ### Radionuclide Releases to, Dispersion and Deposition in Food
 #### Seafood
 
+Japan is an island country surrounded by sea, so seafood has become a major part of food. Its seafood consumption leads the world and is deeply loved by people all over the world. So did the nuclear accident contaminate those seafood? How long will these radioactive elements remain? Let's take a look at fish as an example.
 
 1. Marine Fish Species
 
