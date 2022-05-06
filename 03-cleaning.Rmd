@@ -36,7 +36,7 @@ fd_dt_2 = read_excel("data/Cs137.xlsx", skip=2)
 
 ```{r, message=FALSE}
 bd_dt_1 = read_excel("data/table_18.xlsx", skip=3)
-region_2 = c("Europe", "Asia", "North America")
+region_2 = c("Europe", "Asia", "N.A.")
 ```
 
 ```{r, message=FALSE}
