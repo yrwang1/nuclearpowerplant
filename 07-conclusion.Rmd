@@ -1,12 +1,10 @@
 # Conclusion
 
-## The Chernobyl Accident in 1986
-
 The previous plots show the concentration in ground air, deposition, concentration in foods and irradiation to thyroid of radioactive materials (Iodine-131, Caesium-134, and Caesium-137) after the Chernobyl Accident. 
 
 We can clearly see that this accident has a worldwide effect, which is surprising to me. Of course, the further the country is to Chernobyl, the less concentration it will be. However, the deposition patter is comparabaly irregular.
 
-For food contamination, we found out that there seem to be a latitudinal dependence for the normalized concentration of I-131 and Cs-137 in foods we investigated in this project. In addition, those plots suggest people not to eat meat after the exposure from Cs-137.
+For food contamination, we found out that there seem to be a latitudinal dependence for the normalized concentration of I-131 and Cs-137 in foods we investigated in this project. In addition, those plots suggest people not to eat meat after the exposure from Cs-137. The effect of nuclear radiation on food will gradually decrease over time, especially after a year, the effect becomes minimal for many kinds of food. Among the foods we discussed, agricultural products like rice, vegetables and fruits are less likely to be affected by the radioactive substances as a whole; the impact on raw milk vanished after the first year of the accident. But things are not that optimistic on fishes. Freshwater fish were more likely to be detected in excess of radiocaesium than marine fish. 
 
 Lastly, infants in many countries generally suffer more from the external radiation to thyroid than adults and the incidence rates of thyroid cancer for people (0-18 years old) who live near Chernobyl do increase over time. 
 
