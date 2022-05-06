@@ -1,9 +1,34 @@
 # Missing values
 
-## The Chernobyl Accident in 1986
+A total of 23 data files were used in this project. In this case, instead of checking each file for missing patterns here, we choose one file as an example.
+
+```{r}
+miss<-as.data.frame(read_excel(path = path.expand("data/Belarus.xlsx"),skip = 1))
+
+misstidy = miss %>%
+  rownames_to_column("id") %>%
+  gather(columns, value, -id) %>%
+  mutate(missing = ifelse(is.na(value), "yes", "no")) %>%
+  mutate(missing2 = ifelse(missing == "yes", 1, 0))
+
+ggplot(misstidy, aes(x = fct_reorder(columns, -missing2, sum), y = fct_reorder(id, -missing2, sum), fill = missing)) +
+  geom_tile(color = "white") +
+  scale_fill_viridis_d() +
+  ggtitle("Belarus dataset missing patterns") +
+  xlab("Columns") +
+  ylab("Row number") +
+  theme(axis.text.x = element_text(angle = 40, hjust = 1))
+```
 
 ```{r}
 library(redav)
-miss<-as.data.frame(read_excel(path = path.expand("data/index-101.xls")))
 plot_missing(miss, percent = FALSE)
 ```
+
+The first plot above displays the position of the missing values of each row in the dataset, where the x-axis is the column and the y-axis is the row. We see that 12 rows have 2 missing values, 7 rows have one missing balue, and only the 17th row does not have missing values. The two leftmost columns have the most missing values (`1982-1985` and `Age at exposure (years)`), the rest columns do not have missing values. There are some patterns for particular rows and columns, which are shown in the second plot.
+
+From the second plot we can see that there are total 4 different patterns by rows, with one pattern has no missing values.About half of the rows are in the first missing patterns. 
+
+In fact, those NAs in column `Age at exposure (years)` are due to the different format when we read the Excel in R and convert it to a dataframe, so it should not be considered when analyzing missing patterns. And thus, only the NAs in `1982-1985` are actual missing values, and they have no patterns.
+
+As for the other data files, most of them do no have any NAs, and those with NAs are mostly due to formatting issues or just no radioactive materials detected (i.e., equal to 0).
