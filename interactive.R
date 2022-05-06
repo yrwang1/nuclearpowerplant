@@ -9,10 +9,10 @@
 
 library(shiny)
 library(leaflet)
-library(dplyr)
+library(tidyverse)
 library(lubridate)
 
-con_dt = read.csv("/Applications/STAT\ 5293/Final\ Project\ Data/782ec845-2135-4698-8881-b38823e533bf\ 2/data/1_Spatial_dataset.csv")
+con_dt = read.csv("data/interactive.csv")
 
 con = con_dt %>% 
     slice(-c(1:19)) %>%
